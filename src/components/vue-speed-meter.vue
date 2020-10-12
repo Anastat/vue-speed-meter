@@ -2,9 +2,11 @@
   <div>
     <div id="main-container" :style="cssProps">
       <svg id="svg-container">
+        <!-- Divide by 2.1 so that the circle is slightly smaller than outer container.
+             Otherwise, at a small size (less than 50), the circle border is clipped.-->
         <circle
           class="outer-circle"
-          :r="this.size / 2"
+          :r="this.size / 2.1"
           :cx="centerPoint"
           :cy="centerPoint"
         />
@@ -15,18 +17,27 @@
           :transform="`rotate(90 ${centerPoint} ${centerPoint}) `"
         >
           <circle
-            :r="this.size / 3"
+            class="scale-bigger-width"
+            :r="scaleRadius"
             :cx="centerPoint"
             :cy="centerPoint"
             stroke="black"
-            stroke-dasharray="1 5 10 15"
+            :stroke-dasharray="this.calculateLongScaleLines()"
+          />
+          <circle
+            class="scale-small-width"
+            :r="scaleRadius"
+            :cx="centerPoint"
+            :cy="centerPoint"
+            stroke="black"
+            :stroke-dasharray="this.calculateShortScaleLines()"
           />
           <circle
             class="bottom-circle"
-            :r="this.size / 3"
+            :r="scaleRadius"
             :cx="centerPoint"
             :cy="centerPoint"
-            :stroke-width="scaleWidth + 2"
+            :stroke-width="scaleBiggerWidth + 2"
           />
         </g>
         <circle
@@ -66,18 +77,80 @@ export default {
         "--border-color": this.borderColor,
         "--scale-color": this.scaleColor,
         "--center-point": this.centerPoint,
-        "--scale-width": this.scaleWidth,
+        "--scale-small-width": this.scaleSmallWidth,
+        "--scale-bigger-width": this.scaleBiggerWidth,
       };
     },
     centerPoint() {
       return this.size / 2;
     },
-    scaleWidth() {
+    scaleSmallWidth() {
       return this.size * 0.04;
+    },
+    scaleBiggerWidth() {
+      return this.size * 0.08;
+    },
+    scaleRadius() {
+      return this.size / 3;
+    },
+    scaleCircumference() {
+      return Math.PI * 2 * this.scaleRadius;
+    },
+    // Scale contains 16 equal sections.
+    scaleOneSectionLength() {
+      return this.scaleCircumference / 16;
     },
   },
 
-  methods: {},
+  methods: {
+    /**
+     * Scale contains equal sections.
+     * One section has one long line and 4 short lines.
+     * Long line is twice as wide as the short line.
+     * The space between lines triple the width of long line.
+     * So, the formula is next 2 6 1 6 1 6 1 6 1 6
+     * There are the first 2 is a width of long line,
+     * next 6 is a gap beetween lines, 1 is a width of short line.
+     *
+     * Thus, the section length should be divided by 36
+     * equal parts (2+6+1+6+1+6+1+6+1+6=26).
+     *
+     * There are two circles - one with long lines and
+     * one with short lines.
+     */
+
+    // Return stroke-dasharray for long scale lines
+    calculateLongScaleLines: function() {
+      // The width of the first  line is 2 parts and rest is a gap.
+      const onePart = this.scaleOneSectionLength / 36;
+      const dasharray = onePart * 2 + " " + onePart * 34;
+      return dasharray;
+    },
+    // Returns stroke-dasharray for short scale lines
+    calculateShortScaleLines: function() {
+      const onePart = this.scaleOneSectionLength / 36;
+      const dasharray =
+        "0 " +
+        onePart * 8 +
+        " " +
+        onePart +
+        " " +
+        onePart * 6 +
+        " " +
+        onePart +
+        " " +
+        onePart * 6 +
+        " " +
+        onePart +
+        " " +
+        onePart * 6 +
+        " " +
+        onePart +
+        " " +
+        onePart * 6;
+      return dasharray;
+    },
+  },
 };
 </script>
 
@@ -96,12 +169,20 @@ export default {
 
 .scale-circles {
   fill: none;
-  stroke-width: var(--scale-width);
+}
+
+.scale-bigger-width {
+  stroke-width: var(--scale-bigger-width);
+}
+
+.scale-small-width {
+  stroke-width: var(--scale-small-width);
 }
 
 .outer-circle {
   /* Backgroud of whole speed meter*/
   fill: var(--main-background-color);
+  /* Border of the outer circle*/
   stroke: var(--border-color);
 }
 

@@ -15,7 +15,7 @@ export default {
   data: function() {
     return {
       customValues: {
-        size: 100,
+        size: 500,
         borderColor: "black",
         scaleColor: "black",
       },
