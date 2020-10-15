@@ -16,7 +16,8 @@
           :d="circleToPath()"
           :transform="`rotate(-47 ${centerPoint} ${centerPoint}) `"
         />
-        <text class="scale-values" letter-spacing="-3">
+        <!-- letter-spacing is a 0.5% of container size -->
+        <text class="scale-values" :letter-spacing="this.size * -0.005">
           <textPath xlink:href="#text-path">
             <tspan v-text="scaleStartValue" />
             <!-- X value defines a space between scale values.-->
@@ -63,21 +64,25 @@
             :stroke-width="scaleBiggerWidth + 2"
           />
         </g>
+
         <polygon
+          :key="customCurrentValue"
           class="speedometer-needle"
           :points="calculateNeedlePoint()"
           :transform="
             `rotate(${currentValueInDegrees} ${centerPoint} ${centerPoint})`
           "
         >
-          <animateTransform
-            attributeName="transform"
-            attributeType="XML"
-            type="rotate"
-            :from="`0 ${centerPoint} ${centerPoint}`"
-            :to="`${currentValueInDegrees} ${centerPoint} ${centerPoint}`"
-            :dur="`${this.animationTime}s`"
-          />
+          <template if="animation">
+            <animateTransform
+              attributeName="transform"
+              attributeType="XML"
+              type="rotate"
+              :from="`0 ${centerPoint} ${centerPoint}`"
+              :to="`${currentValueInDegrees} ${centerPoint} ${centerPoint}`"
+              :dur="`${this.animationTime}s`"
+            />
+          </template>
         </polygon>
         <circle
           class="needle-circle"
@@ -94,18 +99,21 @@
 export default {
   name: "VueSpeedMeter",
   props: {
-    customProps: {
+    customStyle: {
       type: Object,
+    },
+    customCurrentValue: {
+      type: Number,
+      default: 0,
     },
   },
   data: function() {
     return {
       // If some of the custom props are not set, apply default values.
-      mainBackgroundColor:
-        this.customProps.mainBackgroundColor || "transparent",
-      size: this.customProps.size || 400,
-      borderColor: this.customProps.borderColor || "black",
-      scaleColor: this.customProps.scaleColor || "black",
+      mainBackgroundColor: this.customStyle.mainBackgroundColor || "white",
+      size: this.customStyle.size || 400,
+      borderColor: this.customStyle.borderColor || "black",
+      scaleColor: this.customStyle.scaleColor || "black",
       // Imported Google Fonts:
       // 'Old Standard TT', serif
       // 'Oswald', sans-serif
@@ -115,16 +123,16 @@ export default {
       // 'Lato', sans-serif
       // 'Titillium Web', sans-serif
       scaleValuesFontFamily:
-        this.customProps.scaleValuesFontFamily || "'Titillium Web', sans-serif",
-      scaleValuesColor: this.customProps.scaleValuesColor || "black",
-      scaleStartValue: this.customProps.scaleStartValue || 0,
-      scaleStep: this.customProps.scaleStep || 10,
-      currentValue: this.customProps.currentValue || 45,
-      animationTime: this.customProps.animationTime || 5,
-      needleColor: this.customProps.needleCircleBorderColor || "black",
-      needleCircleColor: this.customProps.needleCircleColor || "black",
+        this.customStyle.scaleValuesFontFamily || "'Titillium Web', sans-serif",
+      scaleValuesColor: this.customStyle.scaleValuesColor || "black",
+      scaleStartValue: this.customStyle.scaleStartValue || 0,
+      scaleStep: this.customStyle.scaleStep || 10,
+      animationTime: this.customStyle.animationTime || 1,
+      needleColor: this.customStyle.needleCircleBorderColor || "black",
+      needleCircleColor: this.customStyle.needleCircleColor || "black",
       needleCircleBorderColor:
-        this.customProps.needleCircleBorderColor || "black",
+        this.customStyle.needleCircleBorderColor || "black",
+      animation: this.customStyle.animation || true,
     };
   },
 
@@ -177,7 +185,7 @@ export default {
     // Calculate current value for rotation the speed meter needle.
     currentValueInDegrees() {
       // Range from 0 degrees to 270 degrees
-      return (270 * this.currentValue) / this.scaleRange;
+      return (270 * this.customCurrentValue) / this.scaleRange;
     },
   },
 

@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <VueSpeedMeter :customProps="customValues" />
+    <VueSpeedMeter
+      :customStyle="customStyle"
+      :customCurrentValue="currentValue"
+    />
   </div>
 </template>
 
@@ -14,12 +17,23 @@ export default {
   },
   data: function() {
     return {
-      customValues: {
+      customStyle: {
         size: 500,
         borderColor: "black",
         scaleColor: "black",
       },
+      currentValue: 45,
     };
+  },
+  methods: {
+    animateCurrentValue: function() {
+      setInterval(() => {
+        this.currentValue = Math.floor(Math.random() * 120 + 1);
+      }, 1000);
+    },
+  },
+  created: function() {
+    //this.animateCurrentValue();
   },
 };
 </script>
