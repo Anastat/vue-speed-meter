@@ -16,28 +16,29 @@
           :d="circleToPath()"
           :transform="`rotate(-47 ${centerPoint} ${centerPoint}) `"
         />
-        <text class="scale-values">
+        <text class="scale-values" letter-spacing="-3">
           <textPath xlink:href="#text-path">
             <tspan v-text="scaleStartValue" />
-            <tspan x="14%" v-text="scaleStartValue + scaleStep" />
-            <tspan x="31%" v-text="scaleStartValue + scaleStep * 2" />
-            <tspan x="47%" v-text="scaleStartValue + scaleStep * 3" />
-            <tspan x="63%" v-text="scaleStartValue + scaleStep * 4" />
-            <tspan x="79%" v-text="scaleStartValue + scaleStep * 5" />
-            <tspan x="95%" v-text="scaleStartValue + scaleStep * 6" />
-            <tspan x="111%" v-text="scaleStartValue + scaleStep * 7" />
-            <tspan x="127%" v-text="scaleStartValue + scaleStep * 8" />
-            <tspan x="143%" v-text="scaleStartValue + scaleStep * 9" />
-            <tspan x="157%" v-text="scaleStartValue + scaleStep * 10" />
-            <tspan x="173%" v-text="scaleStartValue + scaleStep * 11" />
-            <tspan x="190%" v-text="scaleStartValue + scaleStep * 12" />
+            <!-- X value defines a space between scale values.-->
+            <tspan x="13%" v-text="scaleStartValue + scaleStep" />
+            <tspan x="29%" v-text="scaleStartValue + scaleStep * 2" />
+            <tspan x="44%" v-text="scaleStartValue + scaleStep * 3" />
+            <tspan x="58%" v-text="scaleStartValue + scaleStep * 4" />
+            <tspan x="74%" v-text="scaleStartValue + scaleStep * 5" />
+            <tspan x="89%" v-text="scaleStartValue + scaleStep * 6" />
+            <tspan x="104%" v-text="scaleStartValue + scaleStep * 7" />
+            <tspan x="120%" v-text="scaleStartValue + scaleStep * 8" />
+            <tspan x="135%" v-text="scaleStartValue + scaleStep * 9" />
+            <tspan x="148%" v-text="scaleStartValue + scaleStep * 10" />
+            <tspan x="163%" v-text="scaleStartValue + scaleStep * 11" />
+            <tspan x="178%" v-text="scaleStartValue + scaleStep * 12" />
           </textPath>
         </text>
         <!-- Rotation in SVG works only as inline style. 
              Rotate on 89 degree so needle points to the center of each scale line. -->
         <g
           class="scale-circles"
-          stroke-dasharray="25% 160%"
+          stroke-dasharray="24% 149%"
           :transform="`rotate(89.5 ${centerPoint} ${centerPoint}) `"
         >
           <circle
@@ -45,7 +46,6 @@
             :r="scaleRadius"
             :cx="centerPoint"
             :cy="centerPoint"
-            stroke="black"
             :stroke-dasharray="this.calculateLongScaleLines()"
           />
           <circle
@@ -53,7 +53,6 @@
             :r="scaleRadius"
             :cx="centerPoint"
             :cy="centerPoint"
-            stroke="black"
             :stroke-dasharray="this.calculateShortScaleLines()"
           />
           <circle
@@ -81,8 +80,8 @@
           />
         </polygon>
         <circle
-          class="small-center-circle"
-          :r="smallCenterCircleRadius"
+          class="needle-circle"
+          :r="needleCircleRadius"
           :cx="centerPoint"
           :cy="centerPoint"
         />
@@ -102,10 +101,11 @@ export default {
   data: function() {
     return {
       // If some of the custom props are not set, apply default values.
-      mainBackgroundColor: this.customProps.mainBackgroundColor || "red",
+      mainBackgroundColor:
+        this.customProps.mainBackgroundColor || "transparent",
       size: this.customProps.size || 400,
       borderColor: this.customProps.borderColor || "black",
-      scaleColor: this.customProps.scaleColor || "green",
+      scaleColor: this.customProps.scaleColor || "black",
       // Imported Google Fonts:
       // 'Old Standard TT', serif
       // 'Oswald', sans-serif
@@ -116,11 +116,15 @@ export default {
       // 'Titillium Web', sans-serif
       scaleValuesFontFamily:
         this.customProps.scaleValuesFontFamily || "'Titillium Web', sans-serif",
-      scaleValuesColor: this.customProps.scaleValuesColor || "yellow",
+      scaleValuesColor: this.customProps.scaleValuesColor || "black",
       scaleStartValue: this.customProps.scaleStartValue || 0,
       scaleStep: this.customProps.scaleStep || 10,
       currentValue: this.customProps.currentValue || 45,
       animationTime: this.customProps.animationTime || 5,
+      needleColor: this.customProps.needleCircleBorderColor || "black",
+      needleCircleColor: this.customProps.needleCircleColor || "black",
+      needleCircleBorderColor:
+        this.customProps.needleCircleBorderColor || "black",
     };
   },
 
@@ -137,6 +141,9 @@ export default {
         "--scale-values-font-size": this.scaleValuesFontSize,
         "--scale-values-font-family": this.scaleValuesFontFamily,
         "--scale-values-color": this.scaleValuesColor,
+        "--needle-circle-color": this.needleCircleColor,
+        "--needle-circle-border-color": this.needleCircleBorderColor,
+        "--needle-color": this.needleColor,
       };
     },
     centerPoint() {
@@ -149,9 +156,9 @@ export default {
       return this.size * 0.08;
     },
     scaleRadius() {
-      return this.size / 3;
+      return this.size / 3.2;
     },
-    smallCenterCircleRadius() {
+    needleCircleRadius() {
       return this.size / 14;
     },
     scaleCircumference() {
@@ -162,7 +169,7 @@ export default {
       return this.scaleCircumference / 16;
     },
     scaleValuesFontSize() {
-      return this.size * 0.05 + "px";
+      return this.size * 0.06 + "px";
     },
     scaleRange() {
       return this.scaleStartValue + this.scaleStep * 12 - this.scaleStartValue;
@@ -181,7 +188,7 @@ export default {
      */
 
     circleToPath: function() {
-      const r = this.size / 2.45;
+      const r = this.size / 2.6;
       return (
         "M " +
         this.centerPoint +
@@ -257,9 +264,9 @@ export default {
      */
     calculateNeedlePoint: function() {
       // Radius for bottom of the needle.
-      const smallRadius = this.smallCenterCircleRadius / 2.5;
+      const smallRadius = this.needleCircleRadius / 2.5;
       // Radius for top point of the needle.
-      const topPointRadius = this.size / 2.25;
+      const topPointRadius = this.size / 2.4;
 
       return (
         this.pointOnCircumference(smallRadius, 235) +
@@ -295,6 +302,7 @@ export default {
 
 .scale-circles {
   fill: none;
+  stroke: var(--scale-color);
 }
 /* Scale with long lines.*/
 .scale-bigger-width {
@@ -321,5 +329,14 @@ export default {
   font-size: var(--scale-values-font-size);
   font-family: var(--scale-values-font-family);
   fill: var(--scale-values-color);
+}
+
+.needle-circle {
+  fill: var(--needle-circle-color);
+  stroke: var(--needle-circle-border-color);
+}
+
+.speedometer-needle {
+  fill: var(--needle-color);
 }
 </style>

@@ -17,7 +17,7 @@ export default {
       customValues: {
         size: 500,
         borderColor: "black",
-        scaleColor: "white",
+        scaleColor: "black",
       },
     };
   },
