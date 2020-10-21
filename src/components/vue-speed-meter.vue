@@ -2,6 +2,16 @@
   <div>
     <div id="main-container" :style="cssProps">
       <svg id="svg-container">
+        <defs>
+          <filter id="outer-shadow">
+            <feDropShadow
+              dx="0"
+              dy="0"
+              :stdDeviation="size * 0.01"
+              :flood-color="needleCircleBorderColor"
+            />
+          </filter>
+        </defs>
         <!-- Divide by 2.1 so that the circle is slightly smaller than outer container.
              Otherwise, at a small size (less than 50), the circle border is clipped.-->
         <circle
@@ -16,8 +26,12 @@
           :d="circleToPath()"
           :transform="`rotate(-47 ${centerPoint} ${centerPoint}) `"
         />
-        <!-- letter-spacing is a 0.5% of container size -->
-        <text class="scale-values" :letter-spacing="this.size * -0.005">
+        <!-- letter-spacing is a 0.05% of svg-container size -->
+        <text
+          class="scale-values"
+          :letter-spacing="this.size * -0.005"
+          filter="url(#outer-shadow)"
+        >
           <textPath xlink:href="#text-path">
             <tspan v-text="scaleStartValue" />
             <!-- X value defines a space between scale values.-->
@@ -32,7 +46,7 @@
             <tspan x="135%" v-text="scaleStartValue + scaleStep * 9" />
             <tspan x="148%" v-text="scaleStartValue + scaleStep * 10" />
             <tspan x="163%" v-text="scaleStartValue + scaleStep * 11" />
-            <tspan x="178%" v-text="scaleStartValue + scaleStep * 12" />
+            <tspan x="178%" v-text="scaleMaxValue" />
           </textPath>
         </text>
         <!-- Rotation in SVG works only as inline style. 
@@ -89,6 +103,7 @@
           :r="needleCircleRadius"
           :cx="centerPoint"
           :cy="centerPoint"
+          filter="url(#outer-shadow)"
         />
       </svg>
     </div>
@@ -110,10 +125,10 @@ export default {
   data: function() {
     return {
       // If some of the custom props are not set, apply default values.
-      mainBackgroundColor: this.customStyle.mainBackgroundColor || "white",
+      mainBackgroundColor: this.customStyle.mainBackgroundColor || "#051226",
       size: this.customStyle.size || 400,
-      borderColor: this.customStyle.borderColor || "black",
-      scaleColor: this.customStyle.scaleColor || "black",
+      borderColor: this.customStyle.borderColor || "#041326",
+      scaleColor: this.customStyle.scaleColor || "#B0CBE9",
       // Imported Google Fonts:
       // 'Old Standard TT', serif
       // 'Oswald', sans-serif
@@ -124,14 +139,14 @@ export default {
       // 'Titillium Web', sans-serif
       scaleValuesFontFamily:
         this.customStyle.scaleValuesFontFamily || "'Titillium Web', sans-serif",
-      scaleValuesColor: this.customStyle.scaleValuesColor || "black",
+      scaleValuesColor: this.customStyle.scaleValuesColor || "#B0CBE9",
       scaleStartValue: this.customStyle.scaleStartValue || 0,
       scaleStep: this.customStyle.scaleStep || 10,
       animationTime: this.customStyle.animationTime || 1,
-      needleColor: this.customStyle.needleCircleBorderColor || "black",
-      needleCircleColor: this.customStyle.needleCircleColor || "black",
+      needleColor: this.customStyle.needleColor || "#FE3816",
+      needleCircleColor: this.customStyle.needleCircleColor || "#041326",
       needleCircleBorderColor:
-        this.customStyle.needleCircleBorderColor || "black",
+        this.customStyle.needleCircleBorderColor || "#62A6F1",
       animation: this.customStyle.animation || true,
     };
   },
@@ -182,9 +197,14 @@ export default {
     scaleRange() {
       return this.scaleStartValue + this.scaleStep * 12 - this.scaleStartValue;
     },
+    scaleMaxValue() {
+      return this.scaleStartValue + this.scaleStep * 12;
+    },
     // Calculate current value for rotation the speed meter needle.
     currentValueInDegrees() {
       // Range from 0 degrees to 270 degrees
+      if (this.customCurrentValue < this.scaleStartValue) return 0;
+      else if (this.customCurrentValue > this.scaleMaxValue) return 270;
       return (270 * this.customCurrentValue) / this.scaleRange;
     },
   },
@@ -272,7 +292,7 @@ export default {
      */
     calculateNeedlePoint: function() {
       // Radius for bottom of the needle.
-      const smallRadius = this.needleCircleRadius / 2.5;
+      const smallRadius = this.needleCircleRadius / 3.5;
       // Radius for top point of the needle.
       const topPointRadius = this.size / 2.4;
 
@@ -326,6 +346,7 @@ export default {
   fill: var(--main-background-color);
   /* Border of the outer circle*/
   stroke: var(--border-color);
+  stroke-width: 1%;
 }
 
 .bottom-circle {
@@ -341,10 +362,11 @@ export default {
 
 .needle-circle {
   fill: var(--needle-circle-color);
-  stroke: var(--needle-circle-border-color);
+  /*stroke: var(--needle-circle-border-color);*/
 }
 
 .speedometer-needle {
   fill: var(--needle-color);
+  /*stroke-linejoin: round;*/
 }
 </style>
