@@ -255,7 +255,7 @@ export default {
     currentValueInDegrees() {
       // Range from 0 degrees to 270 degrees
       if (this.scaleStep <= 0) {
-        console.log("Scale step cannot be 0 or negative value.");
+        //console.log("Scale step cannot be 0 or negative value.");
         return 0;
       }
       if (
