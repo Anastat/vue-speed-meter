@@ -18,10 +18,10 @@ export default {
   data: function() {
     return {
       customStyle: {
-        size: 100,
+        size: 500,
         scaleColor: "#B0CBE9",
       },
-      currentValue: 125,
+      currentValue: 430,
     };
   },
   methods: {

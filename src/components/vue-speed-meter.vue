@@ -7,16 +7,17 @@
             <feDropShadow
               dx="0"
               dy="0"
-              :stdDeviation="size * 0.01"
+              :stdDeviation="size * 0.007"
               :flood-color="needleCircleBorderColor"
             />
           </filter>
         </defs>
-        <!-- Divide by 2.1 so that the circle is slightly smaller than outer container.
-             Otherwise, at a small size (less than 50), the circle border is clipped.-->
+        <!-- Divide by 2.02 so that the circle is slightly smaller than outer container.
+             Otherwise, at a small size (less than 50), the circle border is clipped.
+             The circle border takes 1% of width (see .outer-circle css).-->
         <circle
           class="outer-circle"
-          :r="this.size / 2.1"
+          :r="this.size / 2.02"
           :cx="centerPoint"
           :cy="centerPoint"
         />
@@ -24,7 +25,7 @@
           id="text-path"
           fill="transparent"
           :d="circleToPath()"
-          :transform="`rotate(-47 ${centerPoint} ${centerPoint}) `"
+          :transform="`rotate(-90 ${centerPoint} ${centerPoint}) `"
         />
         <!-- letter-spacing is a 0.05% of svg-container size -->
         <text
@@ -33,28 +34,72 @@
           filter="url(#outer-shadow)"
         >
           <textPath xlink:href="#text-path">
-            <tspan v-text="scaleStartValue" />
+            <tspan id="value-1" x="30.25%" v-text="scaleStartValue" />
             <!-- X value defines a space between scale values.-->
-            <tspan x="13%" v-text="scaleStartValue + scaleStep" />
-            <tspan x="29%" v-text="scaleStartValue + scaleStep * 2" />
-            <tspan x="44%" v-text="scaleStartValue + scaleStep * 3" />
-            <tspan x="58%" v-text="scaleStartValue + scaleStep * 4" />
-            <tspan x="74%" v-text="scaleStartValue + scaleStep * 5" />
-            <tspan x="89%" v-text="scaleStartValue + scaleStep * 6" />
-            <tspan x="104%" v-text="scaleStartValue + scaleStep * 7" />
-            <tspan x="120%" v-text="scaleStartValue + scaleStep * 8" />
-            <tspan x="135%" v-text="scaleStartValue + scaleStep * 9" />
-            <tspan x="148%" v-text="scaleStartValue + scaleStep * 10" />
-            <tspan x="163%" v-text="scaleStartValue + scaleStep * 11" />
-            <tspan x="178%" v-text="scaleMaxValue" />
+            <tspan
+              id="value-2"
+              x="45.35%"
+              v-text="scaleStartValue + scaleStep"
+            />
+            <tspan
+              id="value-3"
+              x="60.45%"
+              v-text="scaleStartValue + scaleStep * 2"
+            />
+            <tspan
+              id="value-4"
+              x="75.55%"
+              v-text="scaleStartValue + scaleStep * 3"
+            />
+            <tspan
+              id="value-5"
+              x="90.65%"
+              v-text="scaleStartValue + scaleStep * 4"
+            />
+            <tspan
+              id="value-6"
+              x="105.75%"
+              v-text="scaleStartValue + scaleStep * 5"
+            />
+            <tspan
+              id="value-7"
+              x="121%"
+              v-text="scaleStartValue + scaleStep * 6"
+            />
+            <tspan
+              id="value-8"
+              x="136.5%"
+              v-text="scaleStartValue + scaleStep * 7"
+            />
+            <tspan
+              id="value-9"
+              x="151.5%"
+              v-text="scaleStartValue + scaleStep * 8"
+            />
+            <tspan
+              id="value-10"
+              x="166.5%"
+              v-text="scaleStartValue + scaleStep * 9"
+            />
+            <tspan
+              id="value-11"
+              x="181.5%"
+              v-text="scaleStartValue + scaleStep * 10"
+            />
+            <tspan
+              id="value-12"
+              x="196.5%"
+              v-text="scaleStartValue + scaleStep * 11"
+            />
+            <tspan id="value-13" x="211.5%" v-text="scaleMaxValue" />
           </textPath>
         </text>
         <!-- Rotation in SVG works only as inline style. 
-             Rotate on 89 degree so needle points to the center of each scale line. -->
+             Rotate on 89.35 degree so needle points to the center of each scale line. -->
         <g
           class="scale-circles"
           stroke-dasharray="24% 149%"
-          :transform="`rotate(89.5 ${centerPoint} ${centerPoint}) `"
+          :transform="`rotate(89.35 ${centerPoint} ${centerPoint}) `"
         >
           <circle
             class="scale-bigger-width"
@@ -141,7 +186,7 @@ export default {
         this.customStyle.scaleValuesFontFamily || "'Titillium Web', sans-serif",
       scaleValuesColor: this.customStyle.scaleValuesColor || "#B0CBE9",
       scaleStartValue: this.customStyle.scaleStartValue || 0,
-      scaleStep: this.customStyle.scaleStep || 10,
+      scaleStep: this.customStyle.scaleStep || 20,
       animationTime: this.customStyle.animationTime || 1,
       needleColor: this.customStyle.needleColor || "#FE3816",
       needleCircleColor: this.customStyle.needleCircleColor || "#041326",
@@ -181,6 +226,9 @@ export default {
     scaleRadius() {
       return this.size / 3.2;
     },
+    scaleValuesRadius() {
+      return this.size / 2.6;
+    },
     needleCircleRadius() {
       return this.size / 14;
     },
@@ -200,12 +248,23 @@ export default {
     scaleMaxValue() {
       return this.scaleStartValue + this.scaleStep * 12;
     },
+    valueOnScale() {
+      return this.customCurrentValue - this.scaleStartValue;
+    },
     // Calculate current value for rotation the speed meter needle.
     currentValueInDegrees() {
       // Range from 0 degrees to 270 degrees
-      if (this.customCurrentValue < this.scaleStartValue) return 0;
-      else if (this.customCurrentValue > this.scaleMaxValue) return 270;
-      return (270 * this.customCurrentValue) / this.scaleRange;
+      if (this.scaleStep <= 0) {
+        console.log("Scale step cannot be 0 or negative value.");
+        return 0;
+      }
+      if (
+        this.customCurrentValue >= this.scaleStartValue &&
+        this.customCurrentValue <= this.scaleMaxValue
+      ) {
+        return (270 * this.valueOnScale) / this.scaleRange;
+      } else if (this.customCurrentValue > this.scaleMaxValue) return 270;
+      return 0;
     },
   },
 
@@ -214,7 +273,6 @@ export default {
      * Converts circle to path for text.
      *
      */
-
     circleToPath: function() {
       const r = this.size / 2.6;
       return (
@@ -288,7 +346,7 @@ export default {
     },
 
     /**
-     * Calculate points for needle based on radius.
+     * Calculate points for needle.
      */
     calculateNeedlePoint: function() {
       // Radius for bottom of the needle.
@@ -312,18 +370,25 @@ export default {
       return x + " " + y;
     },
   },
+  /**
+   * Places scale values to the center of the scale line.
+   */
+  mounted: function() {
+    for (let valueElNum = 1; valueElNum <= 13; valueElNum++) {
+      const el = document.getElementById(`value-${valueElNum}`);
+      const textLength = el.getComputedTextLength();
+      el.setAttribute("dx", -textLength / 2);
+    }
+  },
 };
 </script>
 
 <style scoped>
 #main-container {
-  position: relative;
   height: var(--circle-size);
   width: var(--circle-size);
 }
-
 #svg-container {
-  position: absolute;
   width: var(--circle-size);
   height: var(--circle-size);
 }
@@ -362,7 +427,6 @@ export default {
 
 .needle-circle {
   fill: var(--needle-circle-color);
-  /*stroke: var(--needle-circle-border-color);*/
 }
 
 .speedometer-needle {
