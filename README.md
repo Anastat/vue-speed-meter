@@ -1,29 +1,70 @@
 # vue-speed-meter
 
-## Project setup
+## Demo
+
+https://anastat.github.io/vue-speed-meter/
+
+### Install
 ```
-npm install
+npm i vue-speed-meter
 ```
 
-### Compiles and hot-reloads for development
+## Add to project
+### Global
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+// main.js
+import VueSpeedMeter from "vue-speed-meter";
+Vue.component('vue-speed-meter', VueSpeedMeter);
 ```
 
-### Run your tests
+### Local Usage
 ```
-npm run test
+<template>
+  <div>
+    <VueSpeedMeter
+      :customStyle="customStyle"
+      :customCurrentValue="currentValue"
+    />
+  </div>
+</template>
+
+<script>
+import VueSpeedMeter from "vue-speed-meter";
+
+export default {
+  name: "Component",
+  components: {
+    VueSpeedMeter,
+  },
+  data: function() {
+    return {
+      customStyle: {
+        size: 500,
+        scaleColor: "#B0CBE9",
+      },
+      currentValue: 20,
+    };
+  },
+ }
+</script>
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+### Parameters
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+| Props                 | Type          | Default       | Description                     |
+| --------------------- | ------------- | ------------- | ------------------------------- |
+| currentValue          | Number        | 0             | Speed meter value.               |
+|   |  | |  |
+| customStyle:           | Object        |               |                                 |
+|   - mainBackgroundColor | String        | "#051226"     | Background color of speed meter. |
+|   - size                | Number        | 400           | Width and height of the speed meter in 'px'.  | 
+| - borderColor | String | "#041326" | Border color of the outer speed meter circle. |
+| - scaleColor | String | "#B0CBE9" | Color of the scale lines. |
+| - scaleValuesFontFamily | String | "'Titillium Web', sans-serif" | Font family of the scale values. |
+| - scaleValuesColor | String | "#B0CBE9" | Color of the scale values. |
+| - scaleStartValue | Number | 0 | Start value of the scale. |
+| - animationTime | Number | 1 | Time of animation in seconds. Time of moving needle from start value to current value. |
+| - animation | Boolean | true | Animation is ON by default. Can be disabled with 'false'. |
+| - needleColor | String | "#FE3816" | Color of the speed meter needle. |
+| - needleCircleColor | String | "#041326" | Color of the small needle circle. |
+| - needleCircleBorderColor | String | "#62A6F1" | Color of the border of small needle circle. |
