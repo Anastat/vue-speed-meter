@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <VueSpeedMeter
-      :customStyle="customStyle"
-      :customCurrentValue="currentValue"
-    />
+    <VueSpeedMeter />
   </div>
 </template>
 

@@ -2,10 +2,14 @@
   "name": "vue-speed-meter",
   "homepage": "https://anastat.github.io/vue-speed-meter/",
   "main": "./lib/vue-speed-meter.common.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "url": "https://github.com/Anastat/vue-speed-meter"
   },
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/caolan/async/raw/master/LICENSE"
+  }],
   "scripts": {
     "serve": "vue-cli-service serve --port 3000",
     "build": "vue-cli-service build --target lib --name vue-speed-meter src/lib.js",

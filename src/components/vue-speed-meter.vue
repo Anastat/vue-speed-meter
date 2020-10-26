@@ -161,6 +161,9 @@ export default {
   props: {
     customStyle: {
       type: Object,
+      default: function() {
+        return {};
+      },
     },
     customCurrentValue: {
       type: Number,
