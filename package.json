@@ -6,7 +6,6 @@
   "repository": {
     "url": "https://github.com/Anastat/vue-speed-meter"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "scripts": {
     "serve": "vue-cli-service serve --port 3000",
     "build": "vue-cli-service build --target lib --name vue-speed-meter src/lib.js",
