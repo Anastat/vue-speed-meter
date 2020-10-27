@@ -1,6 +1,14 @@
 <template>
   <div id="app">
     <VueSpeedMeter />
+    <div>
+      <VueSpeedMeter
+        id="blackAndWhite"
+        :customStyle="customStyleBlackAndWhite"
+        :customCurrentValue="35"
+        :shadowFilter="shadowFilterBlackAndWhite"
+      />
+    </div>
   </div>
 </template>
 
@@ -18,7 +26,21 @@ export default {
         size: 500,
         scaleColor: "#B0CBE9",
       },
-      currentValue: 430,
+      currentValue: 40,
+      customStyleBlackAndWhite: {
+        size: 500,
+        mainBackgroundColor: "white",
+        borderColor: "black",
+        scaleColor: "black",
+        scaleValuesFontFamily: "'Old Standard TT', serif",
+        scaleValuesColor: "black",
+        scaleStartValue: 0,
+        scaleStep: 10,
+        needleColor: "black",
+        needleCircleColor: "black",
+        needleCircleBorderColor: "black",
+      },
+      shadowFilterBlackAndWhite: false,
     };
   },
   methods: {
@@ -34,14 +56,4 @@ export default {
 };
 </script>
 
-<style>
-/* Import Google Font styles. */
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Old+Standard+TT&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Kameron&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Copse&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Copse&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200&display=swap");
-</style>
+<style></style>
