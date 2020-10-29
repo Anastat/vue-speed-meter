@@ -2,7 +2,7 @@
   "name": "vue-speed-meter",
   "homepage": "https://anastat.github.io/vue-speed-meter/",
   "main": "./lib/vue-speed-meter.common.js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": {
     "url": "https://github.com/Anastat/vue-speed-meter"
   },

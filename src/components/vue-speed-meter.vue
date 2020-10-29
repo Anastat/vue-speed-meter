@@ -140,7 +140,7 @@
             `rotate(${currentValueInDegrees} ${centerPoint} ${centerPoint})`
           "
         >
-          <template v-if="animation">
+          <template v-if="needleAnimation">
             <animateTransform
               attributeName="transform"
               attributeType="XML"
