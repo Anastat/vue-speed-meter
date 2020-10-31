@@ -99,7 +99,9 @@ export default {
       codeSampleDefault: `
         <template>
             <div>
-                <VueSpeedMeter :customStyle="customStyle" />     
+                <VueSpeedMeter 
+                  :customStyle="customStyle" 
+                  :customCurrentValue="25"/>     
             </div>
         </template>
 

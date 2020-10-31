@@ -1,5 +1,9 @@
 # vue-speed-meter
 
+Vue component library for displaying speedometer, thermometer, barometer, tachometer etc.
+
+![default](/src/assets/default.png) ![black&white](/src/assets/black&white.png)
+
 ## Demo
 
 https://anastat.github.io/vue-speed-meter/
@@ -44,7 +48,6 @@ export default {
     return {
       customStyle: {
         size: 500,
-        scaleColor: "#B0CBE9",
       },
       customCurrentValue: 20,
     };
@@ -67,6 +70,7 @@ export default {
 | - scaleValuesFontFamily   | String  | "'Titillium Web', sans-serif" | Font family of the scale values.                                                       |
 | - scaleValuesColor        | String  | "#B0CBE9"                     | Color of the scale values.                                                             |
 | - scaleStartValue         | Number  | 0                             | Start value of the scale.                                                              |
+| - scaleStep               | Number  | 20                            | Scale step between long lines. Cannot be 0 or negative value.                          |
 | - animationTime           | Number  | 1                             | Time of animation in seconds. Time of moving needle from start value to current value. |
 | - needleColor             | String  | "#FE3816"                     | Color of the speed meter needle.                                                       |
 | - needleCircleColor       | String  | "#041326"                     | Color of the small needle circle.                                                      |
