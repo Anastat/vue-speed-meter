@@ -2,7 +2,7 @@
 
 Vue component library for displaying speedometer, thermometer, barometer, tachometer etc.
 
-![default](/src/assets/default.png) ![black&white](/src/assets/black&white.png)
+![default](/src/assets/example.png)
 
 ## Demo
 
