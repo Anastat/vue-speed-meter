@@ -1,165 +1,163 @@
 <template>
-  <div>
-    <div class="main-container" :style="cssProps">
-      <svg class="svg-container">
-        <defs>
-          <filter id="outer-shadow">
-            <feDropShadow
-              dx="0"
-              dy="0"
-              :stdDeviation="size * 0.007"
-              :flood-color="needleCircleBorderColor"
-            />
-          </filter>
-        </defs>
-        <!-- Divide by 2.02 so that the circle is slightly smaller than outer container.
+  <div class="main-container" :style="cssVar">
+    <svg class="svg-container">
+      <defs>
+        <filter id="outer-shadow">
+          <feDropShadow
+            dx="0"
+            dy="0"
+            :stdDeviation="size * 0.007"
+            :flood-color="needleCircleBorderColor"
+          />
+        </filter>
+      </defs>
+      <!-- Divide by 2.02 so that the circle is slightly smaller than outer container.
              Otherwise, at a small size (less than 50), the circle border is clipped.
              The circle border takes 1% of width (see .outer-circle css).-->
-        <circle
-          class="outer-circle"
-          :r="this.size / 2.02"
-          :cx="centerPoint"
-          :cy="centerPoint"
-        />
-        <path
-          :id="`text-path-${this._uid}`"
-          fill="transparent"
-          :d="circleToPath()"
-          :transform="`rotate(-90 ${centerPoint} ${centerPoint}) `"
-        />
-        <!-- letter-spacing is a 0.05% of svg-container size -->
-        <text
-          class="scale-values"
-          :letter-spacing="this.size * -0.005"
-          :filter="shadowFilter ? 'url(#outer-shadow)' : ''"
-        >
-          <textPath :xlink:href="`#text-path-${this._uid}`">
-            <tspan
-              :id="`value-1-${this._uid}`"
-              x="30.25%"
-              v-text="scaleStartValue"
-            />
-            <!-- X value defines a space between scale values.-->
-            <tspan
-              :id="`value-2-${this._uid}`"
-              x="45.35%"
-              v-text="scaleStartValue + scaleStep"
-            />
-            <tspan
-              :id="`value-3-${this._uid}`"
-              x="60.45%"
-              v-text="scaleStartValue + scaleStep * 2"
-            />
-            <tspan
-              :id="`value-4-${this._uid}`"
-              x="75.55%"
-              v-text="scaleStartValue + scaleStep * 3"
-            />
-            <tspan
-              :id="`value-5-${this._uid}`"
-              x="90.65%"
-              v-text="scaleStartValue + scaleStep * 4"
-            />
-            <tspan
-              :id="`value-6-${this._uid}`"
-              x="105.75%"
-              v-text="scaleStartValue + scaleStep * 5"
-            />
-            <tspan
-              :id="`value-7-${this._uid}`"
-              x="121%"
-              v-text="scaleStartValue + scaleStep * 6"
-            />
-            <tspan
-              :id="`value-8-${this._uid}`"
-              x="136.5%"
-              v-text="scaleStartValue + scaleStep * 7"
-            />
-            <tspan
-              :id="`value-9-${this._uid}`"
-              x="151.5%"
-              v-text="scaleStartValue + scaleStep * 8"
-            />
-            <tspan
-              :id="`value-10-${this._uid}`"
-              x="166.5%"
-              v-text="scaleStartValue + scaleStep * 9"
-            />
-            <tspan
-              :id="`value-11-${this._uid}`"
-              x="181.5%"
-              v-text="scaleStartValue + scaleStep * 10"
-            />
-            <tspan
-              :id="`value-12-${this._uid}`"
-              x="196.5%"
-              v-text="scaleStartValue + scaleStep * 11"
-            />
-            <tspan
-              :id="`value-13-${this._uid}`"
-              x="211.5%"
-              v-text="scaleMaxValue"
-            />
-          </textPath>
-        </text>
-        <!-- Rotation in SVG works only as inline style. 
+      <circle
+        class="outer-circle"
+        :r="this.size / 2.02"
+        :cx="centerPoint"
+        :cy="centerPoint"
+      />
+      <path
+        :id="`text-path-${this._uid}`"
+        fill="transparent"
+        :d="circleToPath()"
+        :transform="`rotate(-90 ${centerPoint} ${centerPoint}) `"
+      />
+      <!-- letter-spacing is a 0.05% of svg-container size -->
+      <text
+        class="scale-values"
+        :letter-spacing="this.size * -0.005"
+        :filter="shadowFilter ? 'url(#outer-shadow)' : ''"
+      >
+        <textPath :xlink:href="`#text-path-${this._uid}`">
+          <tspan
+            :id="`value-1-${this._uid}`"
+            x="30.25%"
+            v-text="scaleStartValue"
+          />
+          <!-- X value defines a space between scale values.-->
+          <tspan
+            :id="`value-2-${this._uid}`"
+            x="45.35%"
+            v-text="scaleStartValue + scaleStep"
+          />
+          <tspan
+            :id="`value-3-${this._uid}`"
+            x="60.45%"
+            v-text="scaleStartValue + scaleStep * 2"
+          />
+          <tspan
+            :id="`value-4-${this._uid}`"
+            x="75.55%"
+            v-text="scaleStartValue + scaleStep * 3"
+          />
+          <tspan
+            :id="`value-5-${this._uid}`"
+            x="90.65%"
+            v-text="scaleStartValue + scaleStep * 4"
+          />
+          <tspan
+            :id="`value-6-${this._uid}`"
+            x="105.75%"
+            v-text="scaleStartValue + scaleStep * 5"
+          />
+          <tspan
+            :id="`value-7-${this._uid}`"
+            x="121%"
+            v-text="scaleStartValue + scaleStep * 6"
+          />
+          <tspan
+            :id="`value-8-${this._uid}`"
+            x="136.5%"
+            v-text="scaleStartValue + scaleStep * 7"
+          />
+          <tspan
+            :id="`value-9-${this._uid}`"
+            x="151.5%"
+            v-text="scaleStartValue + scaleStep * 8"
+          />
+          <tspan
+            :id="`value-10-${this._uid}`"
+            x="166.5%"
+            v-text="scaleStartValue + scaleStep * 9"
+          />
+          <tspan
+            :id="`value-11-${this._uid}`"
+            x="181.5%"
+            v-text="scaleStartValue + scaleStep * 10"
+          />
+          <tspan
+            :id="`value-12-${this._uid}`"
+            x="196.5%"
+            v-text="scaleStartValue + scaleStep * 11"
+          />
+          <tspan
+            :id="`value-13-${this._uid}`"
+            x="211.5%"
+            v-text="scaleMaxValue"
+          />
+        </textPath>
+      </text>
+      <!-- Rotation in SVG works only as inline style. 
              Rotate on 89.35 degree so needle points to the center of each scale line. -->
-        <g
-          class="scale-circles"
-          stroke-dasharray="24% 149%"
-          :transform="`rotate(89.35 ${centerPoint} ${centerPoint}) `"
-        >
-          <circle
-            class="scale-bigger-width"
-            :r="scaleRadius"
-            :cx="centerPoint"
-            :cy="centerPoint"
-            :stroke-dasharray="this.calculateLongScaleLines()"
-          />
-          <circle
-            class="scale-small-width"
-            :r="scaleRadius"
-            :cx="centerPoint"
-            :cy="centerPoint"
-            :stroke-dasharray="this.calculateShortScaleLines()"
-          />
-          <circle
-            class="bottom-circle"
-            :r="scaleRadius"
-            :cx="centerPoint"
-            :cy="centerPoint"
-            :stroke-width="scaleBiggerWidth + 2"
-          />
-        </g>
-
-        <polygon
-          :key="customCurrentValue"
-          class="speedometer-needle"
-          :points="calculateNeedlePoint()"
-          :transform="
-            `rotate(${currentValueInDegrees} ${centerPoint} ${centerPoint})`
-          "
-        >
-          <template v-if="needleAnimation">
-            <animateTransform
-              attributeName="transform"
-              attributeType="XML"
-              type="rotate"
-              :from="`0 ${centerPoint} ${centerPoint}`"
-              :to="`${currentValueInDegrees} ${centerPoint} ${centerPoint}`"
-              :dur="`${this.animationTime}s`"
-            />
-          </template>
-        </polygon>
+      <g
+        class="scale-circles"
+        stroke-dasharray="24% 149%"
+        :transform="`rotate(89.35 ${centerPoint} ${centerPoint}) `"
+      >
         <circle
-          class="needle-circle"
-          :r="needleCircleRadius"
+          class="scale-bigger-width"
+          :r="scaleRadius"
           :cx="centerPoint"
           :cy="centerPoint"
-          :filter="shadowFilter ? 'url(#outer-shadow)' : ''"
+          :stroke-dasharray="this.calculateLongScaleLines()"
         />
-      </svg>
-    </div>
+        <circle
+          class="scale-small-width"
+          :r="scaleRadius"
+          :cx="centerPoint"
+          :cy="centerPoint"
+          :stroke-dasharray="this.calculateShortScaleLines()"
+        />
+        <circle
+          class="bottom-circle"
+          :r="scaleRadius"
+          :cx="centerPoint"
+          :cy="centerPoint"
+          :stroke-width="scaleBiggerWidth + 2"
+        />
+      </g>
+
+      <polygon
+        :key="customCurrentValue"
+        class="speedometer-needle"
+        :points="calculateNeedlePoint()"
+        :transform="
+          `rotate(${currentValueInDegrees} ${centerPoint} ${centerPoint})`
+        "
+      >
+        <template v-if="needleAnimation">
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            :from="`0 ${centerPoint} ${centerPoint}`"
+            :to="`${currentValueInDegrees} ${centerPoint} ${centerPoint}`"
+            :dur="`${this.animationTime}s`"
+          />
+        </template>
+      </polygon>
+      <circle
+        class="needle-circle"
+        :r="needleCircleRadius"
+        :cx="centerPoint"
+        :cy="centerPoint"
+        :filter="shadowFilter ? 'url(#outer-shadow)' : ''"
+      />
+    </svg>
   </div>
 </template>
 
@@ -188,48 +186,35 @@ export default {
   },
   data: function() {
     return {
-      // If some of the custom props are not set, apply default values.
-      mainBackgroundColor: this.customStyle.mainBackgroundColor || "#051226",
       size: this.customStyle.size || 400,
-      borderColor: this.customStyle.borderColor || "#041326",
-      scaleColor: this.customStyle.scaleColor || "#B0CBE9",
-      // Imported Google Fonts:
-      // 'Old Standard TT', serif
-      // 'Oswald', sans-serif
-      // 'Roboto', sans-serif
-      // 'Kameron', serif
-      // 'Copse', serif
-      // 'Lato', sans-serif
-      // 'Titillium Web', sans-serif
-      scaleValuesFontFamily:
-        this.customStyle.scaleValuesFontFamily || "'Titillium Web', sans-serif",
-      scaleValuesColor: this.customStyle.scaleValuesColor || "#B0CBE9",
       scaleStartValue: this.customStyle.scaleStartValue || 0,
       scaleStep: this.customStyle.scaleStep || 20,
       animationTime: this.customStyle.animationTime || 1,
-      needleColor: this.customStyle.needleColor || "#FE3816",
-      needleCircleColor: this.customStyle.needleCircleColor || "#041326",
       needleCircleBorderColor:
         this.customStyle.needleCircleBorderColor || "#62A6F1",
     };
   },
 
   computed: {
-    cssProps() {
+    cssVar() {
       return {
-        "--main-background-color": this.mainBackgroundColor,
+        "--main-background-color":
+          this.customStyle.mainBackgroundColor || "#051226",
         "--circle-size": this.size + "px",
-        "--border-color": this.borderColor,
-        "--scale-color": this.scaleColor,
+        "--border-color": this.customStyle.borderColor || "#041326",
+        "--scale-color": this.customStyle.scaleColor || "#B0CBE9",
         "--center-point": this.centerPoint,
         "--scale-small-width": this.scaleSmallWidth,
         "--scale-bigger-width": this.scaleBiggerWidth,
         "--scale-values-font-size": this.scaleValuesFontSize,
-        "--scale-values-font-family": this.scaleValuesFontFamily,
-        "--scale-values-color": this.scaleValuesColor,
-        "--needle-circle-color": this.needleCircleColor,
+        "--scale-values-font-family":
+          this.customStyle.scaleValuesFontFamily ||
+          "'Titillium Web', sans-serif",
+        "--scale-values-color": this.customStyle.scaleValuesColor || "#B0CBE9",
+        "--needle-circle-color":
+          this.customStyle.needleCircleColor || "#041326",
         "--needle-circle-border-color": this.needleCircleBorderColor,
-        "--needle-color": this.needleColor,
+        "--needle-color": this.customStyle.needleColor || "#FE3816",
       };
     },
     centerPoint() {
@@ -402,7 +387,15 @@ export default {
 </script>
 
 <style scoped>
-/* Import Google Font styles. */
+/* Import Google Font styles: 
+    'Old Standard TT', serif
+    'Oswald', sans-serif
+    'Roboto', sans-serif
+    'Kameron', serif
+    'Copse', serif
+    'Lato', sans-serif
+    'Titillium Web', sans-serif
+*/
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Old+Standard+TT&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
