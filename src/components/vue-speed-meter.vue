@@ -16,7 +16,7 @@
              The circle border takes 1% of width (see .outer-circle css).-->
       <circle
         class="outer-circle"
-        :r="this.size / 2.02"
+        :r="outerCircleRadius"
         :cx="centerPoint"
         :cy="centerPoint"
       />
@@ -217,6 +217,9 @@ export default {
         "--needle-color": this.customStyle.needleColor || "#FE3816",
       };
     },
+    outerCircleRadius() {
+      return this.size / 2 - this.size * 0.005; // 0.005 is a half of .outer-circle 'stroke-width' -> 0.5%
+    },
     centerPoint() {
       return this.size / 2;
     },
@@ -310,7 +313,7 @@ export default {
      * next 6 is a gap beetween lines, 1 is a width of short line.
      *
      * Thus, the section length should be divided by 36
-     * equal parts (2+6+1+6+1+6+1+6+1+6=26).
+     * equal parts (2+6+1+6+1+6+1+6+1+6=36).
      *
      * There are two circles - one with long lines and
      * one with short lines.
