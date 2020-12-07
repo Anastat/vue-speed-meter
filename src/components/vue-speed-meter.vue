@@ -20,6 +20,63 @@
         :cx="centerPoint"
         :cy="centerPoint"
       />
+
+      <!-- Rotation in SVG works only as inline style. 
+             Rotate on 89.35 degree so needle points to the center of each scale line. -->
+      <g
+        class="scale-circles"
+        :transform="`rotate(89.35 ${centerPoint} ${centerPoint}) `"
+      >
+        <circle
+          class="scale-bigger-width"
+          :r="scaleRadius"
+          :cx="centerPoint"
+          :cy="centerPoint"
+          :stroke-dasharray="this.calculateLongScaleLines()"
+        />
+        <circle
+          class="scale-small-width"
+          :r="scaleRadius"
+          :cx="centerPoint"
+          :cy="centerPoint"
+          :stroke-dasharray="this.calculateShortScaleLines()"
+        />
+        <circle
+          class="bottom-circle"
+          :r="scaleRadius"
+          :cx="centerPoint"
+          :cy="centerPoint"
+          stroke-dasharray="24% 150%"
+          :stroke-width="scaleBiggerWidth + 2"
+        />
+      </g>
+
+      <polygon
+        :key="customCurrentValue"
+        class="speedometer-needle"
+        :points="calculateNeedlePoint()"
+        :transform="
+          `rotate(${currentValueInDegrees} ${centerPoint} ${centerPoint})`
+        "
+      >
+        <template v-if="needleAnimation">
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            :from="`0 ${centerPoint} ${centerPoint}`"
+            :to="`${currentValueInDegrees} ${centerPoint} ${centerPoint}`"
+            :dur="`${this.animationTime}s`"
+          />
+        </template>
+      </polygon>
+      <circle
+        class="needle-circle"
+        :r="needleCircleRadius"
+        :cx="centerPoint"
+        :cy="centerPoint"
+        :filter="shadowFilter ? 'url(#outer-shadow)' : ''"
+      />
       <path
         :id="`text-path-${this._uid}`"
         fill="transparent"
@@ -101,62 +158,6 @@
           />
         </textPath>
       </text>
-      <!-- Rotation in SVG works only as inline style. 
-             Rotate on 89.35 degree so needle points to the center of each scale line. -->
-      <g
-        class="scale-circles"
-        stroke-dasharray="24% 149%"
-        :transform="`rotate(89.35 ${centerPoint} ${centerPoint}) `"
-      >
-        <circle
-          class="scale-bigger-width"
-          :r="scaleRadius"
-          :cx="centerPoint"
-          :cy="centerPoint"
-          :stroke-dasharray="this.calculateLongScaleLines()"
-        />
-        <circle
-          class="scale-small-width"
-          :r="scaleRadius"
-          :cx="centerPoint"
-          :cy="centerPoint"
-          :stroke-dasharray="this.calculateShortScaleLines()"
-        />
-        <circle
-          class="bottom-circle"
-          :r="scaleRadius"
-          :cx="centerPoint"
-          :cy="centerPoint"
-          :stroke-width="scaleBiggerWidth + 2"
-        />
-      </g>
-
-      <polygon
-        :key="customCurrentValue"
-        class="speedometer-needle"
-        :points="calculateNeedlePoint()"
-        :transform="
-          `rotate(${currentValueInDegrees} ${centerPoint} ${centerPoint})`
-        "
-      >
-        <template v-if="needleAnimation">
-          <animateTransform
-            attributeName="transform"
-            attributeType="XML"
-            type="rotate"
-            :from="`0 ${centerPoint} ${centerPoint}`"
-            :to="`${currentValueInDegrees} ${centerPoint} ${centerPoint}`"
-            :dur="`${this.animationTime}s`"
-          />
-        </template>
-      </polygon>
-      <circle
-        class="needle-circle"
-        :r="needleCircleRadius"
-        :cx="centerPoint"
-        :cy="centerPoint"
-        :filter="shadowFilter ? 'url(#outer-shadow)' : ''"
-      />
     </svg>
   </div>
 </template>
@@ -188,7 +189,6 @@ export default {
     return {
       size: this.customStyle.size || 400,
       scaleStartValue: this.customStyle.scaleStartValue || 0,
-      scaleStep: this.customStyle.scaleStep || 20,
       animationTime: this.customStyle.animationTime || 1,
       needleCircleBorderColor:
         this.customStyle.needleCircleBorderColor || "#62A6F1",
@@ -216,6 +216,12 @@ export default {
         "--needle-circle-border-color": this.needleCircleBorderColor,
         "--needle-color": this.customStyle.needleColor || "#FE3816",
       };
+    },
+    scaleStep() {
+      // Scale step cannot be negative or 0
+      if (this.customStyle.scaleStep && this.customStyle.scaleStep > 0)
+        return this.customStyle.scaleStep;
+      return 20;
     },
     outerCircleRadius() {
       return this.size / 2 - this.size * 0.005; // 0.005 is a half of .outer-circle 'stroke-width' -> 0.5%
@@ -257,13 +263,8 @@ export default {
     valueOnScale() {
       return this.customCurrentValue - this.scaleStartValue;
     },
-    // Calculate current value for rotation the speed meter needle.
+    // Calculate current value in degrees for rotation the speed meter needle.
     currentValueInDegrees() {
-      // Range from 0 degrees to 270 degrees
-      if (this.scaleStep <= 0) {
-        //console.log("Scale step cannot be 0 or negative value.");
-        return 0;
-      }
       if (
         this.customCurrentValue >= this.scaleStartValue &&
         this.customCurrentValue <= this.scaleMaxValue
@@ -304,7 +305,7 @@ export default {
       );
     },
     /**
-     * Scale contains equal sections.
+     * Scale contains 16 equal sections.
      * One section has one long line and 4 short lines.
      * Long line is twice as wide as the short line.
      * The space between lines triple the width of long line.
@@ -361,7 +362,7 @@ export default {
       const topPointRadius = this.size / 2.4;
 
       return (
-        this.pointOnCircumference(smallRadius, 235) +
+        this.pointOnCircumference(smallRadius, 225) +
         ", " +
         this.pointOnCircumference(smallRadius, 45) +
         ", " +
