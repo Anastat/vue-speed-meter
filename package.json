@@ -2,17 +2,17 @@
   "name": "vue-speed-meter",
   "homepage": "https://anastat.github.io/vue-speed-meter/",
   "main": "./lib/vue-speed-meter.common.js",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "repository": {
     "url": "https://github.com/Anastat/vue-speed-meter"
   },
-  "license": "MIT",
   "keywords": [
     "vue",
     "speedometer",
     "tachometer",
     "thermometer",
-    "barometer"
+    "barometer",
+    "gauge"
   ],
   "scripts": {
     "serve": "vue-cli-service serve --port 3000",

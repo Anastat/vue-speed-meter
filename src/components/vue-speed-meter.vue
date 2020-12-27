@@ -92,68 +92,68 @@
         <textPath :xlink:href="`#text-path-${this._uid}`">
           <tspan
             :id="`value-1-${this._uid}`"
-            x="30.25%"
+            x="30%"
             v-text="scaleStartValue"
           />
           <!-- X value defines a space between scale values.-->
           <tspan
             :id="`value-2-${this._uid}`"
-            x="45.35%"
+            x="45%"
             v-text="scaleStartValue + scaleStep"
           />
           <tspan
             :id="`value-3-${this._uid}`"
-            x="60.45%"
+            x="60%"
             v-text="scaleStartValue + scaleStep * 2"
           />
           <tspan
             :id="`value-4-${this._uid}`"
-            x="75.55%"
+            x="75%"
             v-text="scaleStartValue + scaleStep * 3"
           />
           <tspan
             :id="`value-5-${this._uid}`"
-            x="90.65%"
+            x="90%"
             v-text="scaleStartValue + scaleStep * 4"
           />
           <tspan
             :id="`value-6-${this._uid}`"
-            x="105.75%"
+            x="105.5%"
             v-text="scaleStartValue + scaleStep * 5"
           />
           <tspan
             :id="`value-7-${this._uid}`"
-            x="121%"
+            x="120.5%"
             v-text="scaleStartValue + scaleStep * 6"
           />
           <tspan
             :id="`value-8-${this._uid}`"
-            x="136.5%"
+            x="136%"
             v-text="scaleStartValue + scaleStep * 7"
           />
           <tspan
             :id="`value-9-${this._uid}`"
-            x="151.5%"
+            x="151%"
             v-text="scaleStartValue + scaleStep * 8"
           />
           <tspan
             :id="`value-10-${this._uid}`"
-            x="166.5%"
+            x="166%"
             v-text="scaleStartValue + scaleStep * 9"
           />
           <tspan
             :id="`value-11-${this._uid}`"
-            x="181.5%"
+            x="181%"
             v-text="scaleStartValue + scaleStep * 10"
           />
           <tspan
             :id="`value-12-${this._uid}`"
-            x="196.5%"
+            x="196%"
             v-text="scaleStartValue + scaleStep * 11"
           />
           <tspan
             :id="`value-13-${this._uid}`"
-            x="211.5%"
+            x="211%"
             v-text="scaleMaxValue"
           />
         </textPath>
@@ -369,6 +369,7 @@ export default {
         this.pointOnCircumference(topPointRadius, 135)
       );
     },
+
     pointOnCircumference: function(radius, angleInDeegrees) {
       // Convert from Degrees to Radians
       const angleInRadians = angleInDeegrees * (Math.PI / 180);
@@ -376,16 +377,19 @@ export default {
       const y = this.centerPoint + radius * Math.sin(angleInRadians);
       return x + " " + y;
     },
+
+    shiftValuesCenter: function() {
+      for (let valueElNum = 1; valueElNum <= 13; valueElNum++) {
+        const el = document.getElementById(`value-${valueElNum}-${this._uid}`);
+        const textLength = el.getComputedTextLength();
+        el.setAttribute("dx", -textLength / 2);
+      }
+    },
   },
-  /**
-   * Places scale values to the center of the scale line.
-   */
+
   mounted: function() {
-    for (let valueElNum = 1; valueElNum <= 13; valueElNum++) {
-      const el = document.getElementById(`value-${valueElNum}-${this._uid}`);
-      const textLength = el.getComputedTextLength();
-      el.setAttribute("dx", -textLength / 2);
-    }
+    // Places scale values in the center of the scale line.
+    this.shiftValuesCenter();
   },
 };
 </script>

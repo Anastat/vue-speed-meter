@@ -1,6 +1,6 @@
 # vue-speed-meter
 
-Vue component library for displaying speedometer, thermometer, barometer, tachometer etc.
+Vue component for use in a web application to display round gauges such as a speedometer, thermometer, barometer or tachometer.
 
 ![default](/src/assets/example.png)
 
