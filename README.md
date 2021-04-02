@@ -1,10 +1,10 @@
 # vue-speed-meter
 
-Vue component for use in a web application to display round gauges such as a speedometer, thermometer, barometer or tachometer.
+Vue component to display round gauges such as speedometer, thermometer, barometer or tachometer.
 
 ![default](/src/assets/example.png)
 
-## Demo
+## Docs&Demo
 
 https://anastat.github.io/vue-speed-meter/
 
