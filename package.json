@@ -18,7 +18,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --port 3000",
     "build": "vue-cli-service build --target lib --name vue-speed-meter src/lib.js",
-    "predeploy": "vue-cli-service build --mode demo",
+    "predeploy": "vuepress build docs",
     "deploy": "gh-pages -d docs",
     "lint": "vue-cli-service lint",
     "docs:dev": "vuepress dev docs",
