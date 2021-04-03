@@ -45,8 +45,9 @@ export default {
 ```vue
 <template>
   <div>
-    <VueSpeedMeter id="blackAndWhite" "customStyleBlackAndWhite"
-    :customCurrentValue="currentValue" :shadowFilter="shadowFilterBlackAndWhite"
+    <VueSpeedMeter
+      :customCurrentValue="currentValue"
+      :shadowFilter="shadowFilterBlackAndWhite"
     />
   </div>
 </template>
@@ -79,6 +80,58 @@ export default {
         animationTime: 5,
       },
       shadowFilterBlackAndWhite: false,
+    };
+  },
+};
+</script>
+```
+
+## Speedometer
+
+::: center
+
+<Speedometer/>
+
+:::
+
+```vue
+<template>
+  <div>
+    <VueSpeedMeter
+      :customStyle="customStyle"
+      :customCurrentValue="currentValue"
+      :shadowFilter="shadowFilter"
+    />
+  </div>
+</template>
+
+<script>
+import VueSpeedMeter from "vue-speed-meter";
+
+export default {
+  name: "Speedometer",
+
+  components: {
+    VueSpeedMeter,
+  },
+
+  data: function() {
+    return {
+      currentValue: 100,
+      customStyle: {
+        size: 350,
+        mainBackgroundColor: "#151412",
+        borderColor: "#130F0B",
+        scaleColor: "#F3B1BB",
+        scaleValuesFontFamily: "'Roboto', sans-serif",
+        scaleValuesColor: "#F3B1BB",
+        scaleStep: 20,
+        needleColor: "#EC2437",
+        needleCircleColor: "#3F4140",
+        needleCircleBorderColor: "#545454",
+        animationTime: 3,
+      },
+      shadowFilter: false,
     };
   },
 };

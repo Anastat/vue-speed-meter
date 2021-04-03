@@ -35,5 +35,8 @@ module.exports = config({
       display: true,
       copyright: "Copyright © Anastat | MIT LICENSE",
     },
+    git: {
+      contributor: false,
+    },
   },
 });

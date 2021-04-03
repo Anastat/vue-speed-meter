@@ -131,7 +131,7 @@ The color of the border of small needle circle.
 
 ## `needleAnimation`
 
-Animation of needle. Moving from 0 to current value. Can be disabled with 'false'.
+Animation of needle. Moving from the initial value to current value. Can be disabled with 'false'.
 
 <span style="color: var(--accent-color)">Type:</span> `Boolean`
 <br>
@@ -187,7 +187,7 @@ export default {
         needleCircleBorderColor: "black",
       },
       needleAnimation: false,
-      shadowFilterBlackAndWhite: false,
+      shadowFilter: false,
     };
   },
 };
